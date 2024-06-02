@@ -30,3 +30,21 @@ curl -fsSL https://raw.githubusercontent.com/manageitir/docker/main/mirror.sh | 
   ]
 }
 ```
+
+---
+
+# Alpine Mirror
+همچنین منیجیت سرور میرور به روز از alpine دارد که میتوانید روی سیستم عامل alpine از آن استفاده کنید، برای مثال کدهای زیر شامل نمونه `Dockerfile` برای نصب nginx از میرور منیجیت بر روی ایمیج آلپاین است:
+
+```dockerfile
+FROM alpine
+
+# Add manageit alpine mirror to alpine
+RUN echo https://mirror.manageit.ir/alpine/v$(echo $(cat /etc/alpine-release) | awk -F . '{print $1"."$2}')/main > /etc/apk/repositories
+RUN echo https://mirror.manageit.ir/alpine/v$(echo $(cat /etc/alpine-release) | awk -F . '{print $1"."$2}')/community >> /etc/apk/repositories
+
+# Install nginx for example
+RUN apk update && apk add nginx
+
+CMD nginx -g "daemon off;"
+```
